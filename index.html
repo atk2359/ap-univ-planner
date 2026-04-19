@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>Academic Planner - Data Refined</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="wrapper">
+    <aside>
+        <div class="card" style="border-top: 4px solid var(--accent);">
+            <h2>1. 所属コース設定</h2>
+            <select id="my-course-select">
+                <option value="1">情報システム専攻</option>
+                <option value="2">メディア情報専攻</option>
+                <option value="3">システム科学専攻</option>
+            </select>
+        </div>
+        <div class="card">
+            <h2>2. カタログ表示設定</h2>
+            <select id="catalog-course-select">
+                <option value="1">情報システム専攻</option>
+                <option value="2">メディア情報専攻</option>
+                <option value="3">システム科学専攻</option>
+            </select>
+        </div>
+        <div class="card">
+            <h2>3. 講義カタログ</h2>
+            <div class="catalog-scroll" id="catalog">
+                <div id="list-core"></div>
+                <div id="list-adv"></div>
+                <div id="list-rel"></div>
+                <div id="list-prac"></div>
+                <div id="list-res"></div>
+            </div>
+        </div>
+    </aside>
+
+    <main>
+        <div class="tabs-container">
+            <div class="tab-row">
+                <div class="tab active" id="tab-m1z" onclick="switchTab('m1z')">M1 前期</div>
+                <div class="tab" id="tab-m1k" onclick="switchTab('m1k')">M1 後期</div>
+            </div>
+            <div class="tab-row">
+                <div class="tab" id="tab-m2z" onclick="switchTab('m2z')">M2 前期</div>
+                <div class="tab" id="tab-m2k" onclick="switchTab('m2k')">M2 後期</div>
+            </div>
+        </div>
+        <div class="card">
+            <h2 id="table-title">M1 前期 時間割</h2>
+            <table>
+                <thead><tr><th style="width:30px"></th><th>月</th><th>火</th><th>水</th><th>木</th><th>金</th></tr></thead>
+                <tbody id="grid"></tbody>
+            </table>
+            <div class="special-grid">
+                <div class="special-box" id="c-intensive" onclick="openEditor('c-intensive', '集中講義')">
+                    <span class="special-label">集中講義</span>
+                    <div id="intensive-content">追加</div>
+                </div>
+                <div class="special-box" id="c-research" onclick="openEditor('c-research', '特別研究')">
+                    <span class="special-label">特別研究</span>
+                    <div id="research-content">追加</div>
+                </div>
+                <div class="special-box" id="c-other" onclick="openEditor('c-other', 'その他枠')">
+                    <span class="special-label">その他枠</span>
+                    <div id="other-content">追加</div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <aside>
+        <div style="padding: 10px 0 20px 5px;">
+            <h1 style="font-size: 1.4rem; color: var(--accent); margin: 0; font-weight: 800; letter-spacing: 0.05em;">
+                Academic Planner 
+                <span style="font-size: 0.8rem; font-weight: normal; opacity: 0.8;">
+                    v1.0 <span id="update-date-display" style="margin-left: 10px; border-left: 1px solid #ccc; padding-left: 10px;"></span>
+                </span>
+            </h1>
+        </div>
+        <div class="card">
+            <h2>データ管理</h2>
+            <div style="display:flex; gap:5px; margin-bottom: 8px;">
+                <button onclick="exportData()" style="flex:1; padding:8px; cursor:pointer; font-size:0.7rem;">保存(.json)</button>
+                <button onclick="document.getElementById('import-file').click()" style="flex:1; padding:8px; cursor:pointer; font-size:0.7rem;">読込(.json)</button>
+            </div>
+            <button onclick="document.getElementById('catalog-diff-file').click()" 
+                    style="width:100%; padding:8px; cursor:pointer; font-size:0.7rem; background:#fff; border:1px solid var(--accent); color:var(--accent); border-radius:4px;">
+                カタログ拡張(.json)
+            </button>
+            
+            <input type="file" id="import-file" style="display:none" accept=".json" onchange="importData(event)">
+            <input type="file" id="catalog-diff-file" style="display:none" accept=".json" onchange="importCatalogDiff(event)">
+        </div>
+        <div class="card" style="border-top: 4px solid var(--success);">
+            <h2>修了要件 進捗</h2>
+            <div id="stats-container"></div>
+        </div>
+        <div class="card" style="border-top: 4px solid var(--danger);">
+            <h2>通知・アラート</h2>
+            <div id="msg-space"></div>
+        </div>
+    </aside>
+
+    <div class="card full-width" style="background: #fdfdfd; border-top: 2px solid var(--border);">
+        <div class="usage-container">
+            <div class="usage-section">
+                <h3>ご利用方法</h3>
+                <ul class="usage-list">
+                    <li><b>コース設定</b>: 左上の「所属コース設定」を選択してください。修了要件の進捗計算に反映されます。</li>
+                    <li><b>講義の登録</b>: 「講義カタログ」から登録したい講義名をクリックし、ポップアップで登録先の「学期・曜日・時限」を指定して保存してください。</li>
+                    <li><b>時間割の編集</b>: 時間割内のセルをクリックすると、手動での講義名変更や削除が可能です。</li>
+                    <li><b>データの保管</b>: 本アプリはブラウザを閉じると内容がリセットされます。作業終了時は「保存(.json)」を行い、次回利用時に「読込」を行ってください。</li>
+                    <li><b>カタログの拡張</b>: 独自の講義を追加・修正したい場合は、<a href="templates/diff_template.json" download style="color: var(--accent); font-weight: bold;">こちらのテンプレート(JSON)</a>を編集し、「カタログ拡張」から読み込んでください。</li>
+                </ul>
+            </div>
+            <div class="usage-section">
+                <h3>注意事項・仕様</h3>
+                <ul class="usage-list">
+                    <li><b>重複チェック</b>: 同一時間に複数の講義を登録、または同じ講義を重複して登録すると、右下の「アラート」に警告が表示されます。</li>
+                    <li><b>振替単位の計算</b>: 他専攻・他コース科目の単位振替（上限あり）は、修了要件進捗に自動で計算・反映されます。</li>
+                    <li><b>最新情報の確認</b>: 画面右上に表示されている<b>「Data: YYYY-MM-DD」</b>がベースデータの最終更新日です。最新の開講状況と乖離がないか、必ず公式情報と照らし合わせてください。</li>
+                    <li><b>講義情報の修正・追加</b>: 自身の環境に合わせて特定の講義情報を書き換えたい、または不足している講義を追加したい場合は、別途用意した差分用JSONファイルを<b>「カタログ拡張」</b>ボタンから読み込んでください。</li>
+                    <li><b>特殊枠の扱い</b>: 集中講義や特別研究、所属外の科目は、時間割下部の「専用ボックス」または「その他」のカテゴリを利用して管理してください。</li>
+                </ul>
+            </div>
+            <div class="usage-section" style="grid-column: 1 / -1; border-top: 1px dashed var(--border); padding-top: 10px; margin-top: 5px;">
+                <h3 style="color: #95a5a6;">免責事項</h3>
+                <ul class="usage-list" style="color: #7f8c8d;">
+                    <li><b>非公式ツール</b>: 本アプリは個人が開発した<b>非公式ツール</b>であり、大学機関およびその関連企業とは一切関係ありません。</li>
+                    <li><b>情報の正確性</b>: 掲載されている講義情報は、公開情報をもとに個人が整理・作成したものです。最新かつ正確な情報は、必ず大学公式のシラバスや学内掲示板等で確認してください。</li>
+                    <li><b>責任の所在</b>: 本ツールの利用によって生じたいかなる不利益や損害についても、開発者は一切の責任を負いかねます。</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+<dialog id="selector-dialog">
+    <h3 style="font-size:0.9rem; margin-top:0;">登録先の指定</h3>
+    <p id="selected-course-name" style="font-weight:bold; color:var(--accent); font-size:0.8rem;"></p>
+    <label class="label-sm">年次・学期</label>
+    <select id="sel-term"></select>
+    <div id="day-period-selectors">
+        <label class="label-sm" style="margin-top:10px;">曜日</label>
+        <select id="sel-day">
+            <option value="1">月曜日</option><option value="2">火曜日</option><option value="3">水曜日</option><option value="4">木曜日</option><option value="5">金曜日</option>
+        </select>
+        <label class="label-sm" style="margin-top:10px;">時限</label>
+        <select id="sel-period">
+            <option value="1">1限</option><option value="2">2限</option><option value="3">3限</option><option value="4">4限</option><option value="5">5限</option><option value="6">6限</option>
+        </select>
+    </div>
+    <div style="display:flex; gap:10px; margin-top:20px;">
+        <button id="btn-confirm-add" onclick="confirmSelector(false)" style="flex:2; padding:10px; background:var(--accent); color:white; border:none; border-radius:5px; cursor:pointer; font-weight:bold;">登録</button>
+        <button id="btn-confirm-overwrite" onclick="confirmSelector(true)" style="flex:2; padding:10px; background:var(--danger); color:white; border:none; border-radius:5px; cursor:pointer; font-weight:bold; display:none;">上書き</button>
+        <button onclick="document.getElementById('selector-dialog').close()" style="flex:1; padding:10px; background:#eee; border:none; border-radius:5px; cursor:pointer;">終了</button>
+    </div>
+</dialog>
+
+<div id="editor">
+    <div style="display:flex; justify-content:space-between; margin-bottom:10px;">
+        <span id="edit-pos" style="font-weight:bold; color:var(--accent); font-size:0.8rem;">編集</span>
+        <span style="font-size:0.7rem; color:#ccc; cursor:pointer;" onclick="closeEditor()">[閉じる]</span>
+    </div>
+    <div id="lecture-edit-list"></div>
+    <hr style="border:0; border-top:1px solid #eee; margin:10px 0;">
+    <label class="label-sm">新規追加・編集</label>
+    <input type="text" id="in-name" placeholder="講義名">
+    <div style="display:flex; gap:5px; margin-top:5px;">
+        <select id="in-cat" style="flex:2">
+            <option value="core">専門共通</option>
+            <option value="adv">専門専攻 (自)</option>
+            <option value="rel">関連科目 (自)</option>
+            <option value="other-adv">専門専攻 (他)</option>
+            <option value="other-rel">関連科目 (他)</option>
+            <option value="prac">演習科目</option>
+            <option value="res">特別研究</option>
+        </select>
+        <select id="in-unit" style="flex:1"><option value="1">1</option><option value="2" selected>2</option><option value="4">4</option></select>
+    </div>
+    <div style="display:flex; gap:8px; margin-top:10px;">
+        <button onclick="updateCell()" style="flex:1; padding:10px; background:var(--accent); color:#fff; border:none; border-radius:5px; font-weight:bold; cursor:pointer;">保存</button>
+    </div>
+</div>
+
+<script>
+    // script.js 自体の自動読み込み
+    (function() {
+        const s = document.createElement('script');
+        s.src = "script.js?v=" + new Date().getTime();
+        document.body.appendChild(s);
+    })();
+</script>
+
+</body>
+</html>
