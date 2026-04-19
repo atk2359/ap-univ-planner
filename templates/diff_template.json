@@ -1,0 +1,45 @@
+{
+  "coreCourses": [
+    {
+      "name": "既存講義の上書き例",
+      "schedule": "開講曜日変更: 月1",
+      "sem": "z",
+      "day": 1,
+      "period": 1
+    },
+    {
+      "name": "既存講義を非開講にする例",
+      "schedule": "2026年度は開講されません"
+    },
+    {
+      "name": "新規講義の追加例",
+      "schedule": "前期集中",
+      "sem": "z",
+      "isIntensive": true
+    }
+  ],
+  "majorMasters": {
+    "1": {
+      "adv": [
+        {
+          "name": "専攻科目の追加例",
+          "schedule": "後期火3",
+          "sem": "k",
+          "day": 2,
+          "period": 3
+        }
+      ],
+      "rel": [
+        {
+          "name": "関連科目の追加例",
+          "schedule": "後期火4",
+          "sem": "k",
+          "day": 2,
+          "period": 4
+        }
+      ]
+    },
+    "2": { "adv": [], "rel": [] },
+    "3": { "adv": [], "rel": [] }
+  }
+}
