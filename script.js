@@ -232,16 +232,21 @@ function renderEditList() {
     const list = document.getElementById('lecture-edit-list');
     list.innerHTML = "";
     const dataArr = appState[appState.activeTab][activeId] || [];
+    
     dataArr.forEach((v, idx) => {
         const div = document.createElement('div');
         div.className = "lecture-tile";
         div.style.display = "flex";
         div.style.justifyContent = "space-between";
-        div.innerHTML = `<span>${v.name}</span>
-            <span>
-                <button onclick="editLecture(${idx})" style="font-size:0.6rem;">編</button>
-                <button onclick="deleteLecture(${idx})" style="font-size:0.6rem;">削</button>
-            </span>`;
+        div.style.alignItems = "center"; // 垂直中央揃えを追加
+        div.style.padding = "8px";       // 余白を追加
+        
+        div.innerHTML = `
+            <span style="font-weight:bold; font-size:0.8rem;">${v.name}</span>
+            <div style="display:flex; gap:8px;">
+                <button onclick="editLecture(${idx})">編集</button>
+                <button onclick="deleteLecture(${idx})">削除</button>
+            </div>`;
         list.appendChild(div);
     });
 }
@@ -345,7 +350,7 @@ function calculateAndNotify() {
         { n: `専門科目 合計 (${L.TOTAL_ADV_REQ})`, v: s.core + s.adv + tAdv, r: L.TOTAL_ADV_REQ },
         { n: ` └ 共通 (${L.CORE_MIN})`, v: s.core, r: L.CORE_MIN },
         { n: ` └ 専攻 (${L.MAJOR_MIN})`, v: s.adv + tAdv, r: L.MAJOR_MIN, extra: `(内、他専攻振替: ${tAdv}/${L.OTHER_ADV_LIMIT})` },
-        { n: `関連科目 (${L.REL_MIN})`, v: s.rel + tRel, r: L.REL_MIN, extra: `(内、他コース振替: ${tRel}/${L.OTHER_REL_LIMIT})` },
+        { n: `関連科目 (${L.REL_MIN})`, v: s.rel + tRel, r: L.REL_MIN, extra: `(内、他専攻振替: ${tRel}/${L.OTHER_REL_LIMIT})` },
         { n: `情報科学演習 (${L.PRAC_MIN})`, v: s.prac, r: L.PRAC_MIN },
         { n: `情報科学特別研究 (${L.RES_MIN})`, v: s.res, r: L.RES_MIN }
     ];
