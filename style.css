@@ -1,8 +1,21 @@
 :root {
     --bg: #f4f7f6; --card: #ffffff; --primary: #2c3e50; 
     --accent: #3498db; --success: #27ae60; --danger: #e74c3c;
-    --border: #dcdde1; --major-core: #e8f4fd; --major-adv: #fef9e7; --related: #f4ecf7;
+    --border: #dcdde1; 
+    
+    /* カテゴリカラーの定義 */
+    --cat-core: #2980b9;    /* 共通 */
+    --cat-adv: #9a7d0a;     /* 専攻 */
+    --cat-rel: #8e44ad;     /* 関連 */
+    --cat-prac: #e67e22;    /* 演習 */
+    --cat-res: #2e86c1;     /* 研究 */
+    --cat-other: #7f8c8d;   /* 他専攻・他関連 */
+    --cat-manual: #34495e;  /* 手動入力 */
+
+    /* 背景用淡色 */
+    --major-core: #e8f4fd; --major-adv: #fef9e7; --related: #f4ecf7;
 }
+
 body { font-family: 'Helvetica Neue', Arial, sans-serif; background: var(--bg); color: var(--primary); margin: 0; padding: 15px; }
 .wrapper { max-width: 1550px; margin: 0 auto; display: grid; grid-template-columns: 320px 1fr 300px; gap: 15px; }
 .card { background: var(--card); border-radius: 10px; padding: 15px; box-shadow: 0 4px 10px rgba(0,0,0,0.06); margin-bottom: 15px; }
@@ -16,11 +29,12 @@ select, input[type="text"] { width: 100%; padding: 8px; border: 1px solid var(--
 .item.selected { background: #f8f9fa; color: #bdc3c7; border-style: dashed; }
 .item.selected::after { content: "✓"; position: absolute; right: 8px; top: 50%; transform: translateY(-50%); color: var(--success); font-weight: bold; }
 
-.item.core { border-left: 4px solid var(--accent); }
-.item.adv { border-left: 4px solid #f1c40f; }
-.item.rel { border-left: 4px solid #9b59b6; }
-.item.prac { border-left: 4px solid #e67e22; }
-.item.res { border-left: 4px solid #2e86c1; }
+/* 変数を使用したボーダー指定 */
+.item.core { border-left: 4px solid var(--cat-core); }
+.item.adv { border-left: 4px solid #f1c40f; } /* 専攻の黄色 */
+.item.rel { border-left: 4px solid var(--cat-rel); }
+.item.prac { border-left: 4px solid var(--cat-prac); }
+.item.res { border-left: 4px solid var(--cat-res); }
 
 .tabs-container { display: flex; flex-direction: column; gap: 5px; margin-bottom: 12px; }
 .tab-row { display: flex; gap: 5px; }
@@ -38,13 +52,15 @@ th { background: #f8f9fa; color: #666; height: 25px; vertical-align: middle; }
 .special-box { border: 2px dashed var(--border); border-radius: 8px; min-height: 50px; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; position: relative; font-size: 0.75rem; background: #fff; text-align: center; padding: 5px; }
 .special-label { position: absolute; top: -8px; left: 8px; background: var(--bg); padding: 0 5px; font-size: 0.6rem; font-weight: bold; color: #95a5a6; }
 
+/* カテゴリタグの色の定義を整理 */
 .cat-tag { font-size: 0.55rem; padding: 0px 2px; border-radius: 2px; font-weight: bold; display: inline-block; margin-top: 1px; }
-.tag-core { background: var(--major-core); color: #2980b9; }
-.tag-adv { background: var(--major-adv); color: #9a7d0a; }
-.tag-rel { background: var(--related); color: #8e44ad; }
-.tag-prac { background: #fdf2e9; color: #e67e22; }
-.tag-res { background: #ebf5fb; color: #2e86c1; }
-.tag-other { background: #eee; color: #666; }
+.tag-core { background: var(--major-core); color: var(--cat-core); }
+.tag-adv { background: var(--major-adv); color: var(--cat-adv); }
+.tag-rel { background: var(--related); color: var(--cat-rel); }
+.tag-prac { background: #fdf2e9; color: var(--cat-prac); }
+.tag-res { background: #ebf5fb; color: var(--cat-res); }
+.tag-other { background: #eee; color: var(--cat-other); }
+.tag-manual { background: #e5e8e8; color: var(--cat-manual); }
 
 .stat-row { display: flex; flex-direction: column; padding: 6px 0; border-bottom: 1px solid #f1f1f1; font-size: 0.78rem; }
 .badge { font-size: 0.65rem; padding: 2px 6px; border-radius: 10px; color: white; }
@@ -59,7 +75,6 @@ dialog { border: none; border-radius: 12px; box-shadow: 0 10px 40px rgba(0,0,0,0
 dialog::backdrop { background: rgba(0,0,0,0.5); }
 #editor { display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #fff; padding: 20px; border-radius: 12px; z-index: 1000; width: 320px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); border: 2px solid var(--accent); }
 
-/* 最下部フルワイド用 */
 .full-width { grid-column: 1 / -1; }
 .usage-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 5px; }
 .usage-section h3 { font-size: 0.8rem; color: var(--accent); margin: 0 0 8px 0; display: flex; align-items: center; }
@@ -67,8 +82,42 @@ dialog::backdrop { background: rgba(0,0,0,0.5); }
 .usage-list { margin: 0; padding-left: 18px; font-size: 0.72rem; line-height: 1.6; color: #555; }
 .usage-list li { margin-bottom: 4px; }
 
-h1 span {
-    display: inline-block;
-    margin-left: 8px;
-    vertical-align: middle;
+h1 span { display: inline-block; margin-left: 8px; vertical-align: middle; }
+
+/* --- スマホ・タブレット対応 (Responsive) --- */
+@media (max-width: 1024px) {
+    .wrapper {
+        grid-template-columns: 1fr; /* 3カラムから1カラムへ */
+        padding: 10px;
+    }
+
+    /* 左カラム(カタログ)を時間割の上に、右カラム(通知)を時間割の下に配置 */
+    .wrapper > :nth-child(1) { order: 1; } /* カタログ */
+    .wrapper > :nth-child(2) { order: 2; } /* 時間割本体 */
+    .wrapper > :nth-child(3) { order: 3; } /* 判定・通知 */
+
+    /* テーブルがはみ出さないよう横スクロールを許可 */
+    .card:has(table) {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    table {
+        min-width: 600px; /* 極端に潰れないよう最小幅を確保 */
+    }
+
+    /* 集中講義などのグリッドを2列に変更 */
+    .special-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    /* 下部の使い方セクションも縦並びに */
+    .usage-container {
+        grid-template-columns: 1fr;
+    }
+    
+    #editor, dialog {
+        width: 90%; /* モーダルを画面幅に合わせる */
+        max-width: none;
+    }
 }
