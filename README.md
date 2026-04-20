@@ -42,7 +42,7 @@
 - `data.js`: 標準の講義データセット（共通科目・各専攻科目）。
 - `style.css`: 視認性を重視したUIデザイン。
 - `templates/diff_template.json`: カタログ拡張用の配布用テンプレート。
-- `README.md`: 説明用ファイル。
+- `README.md`: READMEファイル。
 - `LICENSE`: ライセンス。
 
 ## ⚠️ 免責事項
