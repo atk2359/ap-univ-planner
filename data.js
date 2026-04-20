@@ -50,6 +50,7 @@ const majorMasters = {
             { name: "情報科学特論", schedule: "前期月4", sem: "z", day: 1, period: 4 },
             { name: "知的情報メディア特論", schedule: "前期月3", sem: "z", day: 1, period: 3 },
             { name: "モデルベース制御特論", schedule: "後期木1", sem: "k", day: 4, period: 1 },
+            { name: "状況理解特論", schedule: "開講なし"},
             { name: "組込みソフトウェア特論", schedule: "前期木5", sem: "z", day: 4, period: 5 }
         ]
     },
@@ -69,7 +70,8 @@ const majorMasters = {
             { name: "情報科学特論", schedule: "前期月4", sem: "z", day: 1, period: 4 },
             { name: "高信頼情報システム特論", schedule: "前期集中", sem: "z", isIntensive: true },
             { name: "地域情報システム特論", schedule: "前期金4", sem: "z", day: 5, period: 4 },
-            { name: "知的情報メディア特論", schedule: "前期月3", sem: "z", day: 1, period: 3 }
+            { name: "知的情報メディア特論", schedule: "前期月3", sem: "z", day: 1, period: 3 },
+            { name: "状況理解特論", schedule: "開講なし"}
         ]
     },
     "3": { 
