@@ -4,7 +4,7 @@
 複雑な修了要件（専攻間振替や単位区分）を自動で計算し、2年間の履修計画を視覚的に管理できます。
 
 ## 🚀 公開URL
-`https://atk2359.github.io/ap-univ-planner/`
+[https://atk2359.github.io/ap-univ-planner/](https://atk2359.github.io/ap-univ-planner/)
 
 ## ✨ 愛知県立大学大学院向けの機能
 - **修了要件の自動判定**: 専門科目、専攻科目、関連科目、演習科目、特別研究の各区分に基づいた単位集計。
